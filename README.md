@@ -96,6 +96,34 @@ Replace /dev/sdX3 with your system partition.
     # mkfs.ext4 /dev/sdX3
 
 ## Mount partitions
+```
+mount /dev/vda2 /mnt
+```
+```
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@log
+btrfs subvolume create /mnt/@pkg
+btrfs subvolume create /mnt/@.snapshots
+```
+```
+umount /mnt
+```
+```
+sudo mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
+```
+```
+mkdir /mnt/{boot,home,var/log,var/cache/pacman/pkg,.snapshots}
+```
+```
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
+```
+```
+mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/vda1 /mnt/boot
+```
 
     # mount /dev/sdX3 /mnt
     # mkdir /mnt/boot
