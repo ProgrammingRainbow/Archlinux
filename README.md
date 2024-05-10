@@ -39,14 +39,16 @@ It may be something like pressing `escape`, `F5`, `F8`, `F10` or `F11` during bo
 If you are using a US keyboard you can skip this step.
 ### List available keyboard keymaps
 If you would like to see a list keyboard use this command.
-
-    # ls /usr/share/kbd/keymaps/**/*.map.gz
-
+```
+    localectl list-keymaps
+```
+Use the arrow keys or `j`, `k` to move up or down the list. To quit use the `q` key.
+<br/><br/>
 ### Set keyboard keymap
 Here is an example of setting the keyboard to the UK keymap.
-
-    # loadkeys uk
-
+```
+    loadkeys uk
+```
 ## Setup Internet Connection
 ### List Wifi adapter
 If you need to setup wireless internet first find the name of your wife ADAPTER.
