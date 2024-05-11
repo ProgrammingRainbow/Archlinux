@@ -39,13 +39,11 @@ It may be something like pressing `escape`, `F5`, `F8`, `F10` or `F11` during bo
 <br/><br/>
 ## Setup keyboard
 If you are using a US keyboard you can skip this step.
-<br/><br/>
 ### List available keyboard keymaps
 ```
 localectl list-keymaps
 ```
 Use the arrow keys or `j`, `k` to move up or down the list. To quit use the `q` key.
-<br/><br/>
 ### Set keyboard keymap
 Here is an example of setting the keyboard to the UK keymap.
 ```
@@ -59,14 +57,12 @@ ip link
 <br/><br/>
 ## Setup Wireless Internet Connection
 If you have a wired connection, or using a VM, you are probably automatically online.
-<br/><br/>
 ### List Wifi adapter
 If you need to setup wireless internet first find the name of your wifi DEVICE. On the left i should have a name for example `wlan0` and on the right `station`.
 ```
 iwctl device list
 ```
 This will be your DEVICE name. The name of your network you're connecting to is "SSID" in double quotations.
-<br/><br/>
 ### Connect Wifi to internet
 Replace DEVICE and SSID below with their names. You will be prompted for a password to your SSID.
 ```
@@ -84,12 +80,10 @@ ping archlinux.org
 ```
 passwd
 ```
-<br/><br/>
 ### Get host ip address
 ```
 ip a
 ```
-<br/><br/>
 ### Connect from guest machine
 Using the ip address above as IP on the guest system that is on the same network.
 ```
