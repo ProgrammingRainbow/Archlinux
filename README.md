@@ -19,9 +19,9 @@ A direct link to a mirror with the latest image. https://mirrors.edge.kernel.org
 WARNING! All data on the USB device will be permanently lost.
 WARNING! Be sure to check device size and mount points to make sure it is your USB.
 To find the name of your USB device. Use the command lsblk.
-
-    # lsblk
-
+```
+lsblk
+```
 Be sure to know the name of your USB. `/dev/sdX` where X is the letter of your USB.
 Be careful it is not your hard drive or ssd.
 The partition `part /` is the device with your system partition.
@@ -48,6 +48,17 @@ Use the arrow keys or `j`, `k` to move up or down the list. To quit use the `q` 
 Here is an example of setting the keyboard to the UK keymap.
 ```
 loadkeys uk
+```
+<br/><br/>
+## Change the Console Font
+This is strictly an optional step.
+### list available fonts.
+```
+ls /usr/share/kbd/consolefonts/ | more
+```
+### Set a font.
+```
+setfont ter-132b
 ```
 <br/><br/>
 ## Make sure network device is enabled
