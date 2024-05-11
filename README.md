@@ -13,23 +13,23 @@ https://wiki.archlinux.org/index.php/Installation_guide
 ### Download ISO image
 The official Arch Linux download page. https://archlinux.org/download/
 
-A direct link to a mirror with the latest image. https://mirrors.edge.kernel.org/archlinux/iso/latest/
+A direct link to the latest image. https://geo.mirror.pkgbuild.com/iso/latest/archlinux-x86_64.iso
 
 ### Create a bootable USB
 WARNING! All data on the USB device will be permanently lost.
-WARNING! Be sure to check device size and mount points to make sure it is your USB.
+WARNING! Be sure to check device size and mount points to make sure it is your USB. You should remove all other storage divices just to be safe.
 To find the name of your USB device. Use the command lsblk.
 ```
 lsblk
 ```
 Be sure to know the name of your USB. `/dev/sdX` where X is the letter of your USB.
 Be careful it is not your hard drive or ssd.
-The partition `part /` is the device with your system partition.
+The partition `part /` is the device with your system partition. That is NOT the device you want to write to.
 
-We will use the cat command to write the image to the USB. Change directory to where ever you downloaded the file.
+We will use the dd command to write the image to the USB. Change directory to where ever you downloaded the file.
 ```
 cd ~/Downloads
-cat archlinux-*-x86_64.iso > /dev/sdX
+dd bs=4M if=archlinux-x86_64.iso of=/dev/sdX conv=fsync oflag=direct status=progress
 ```
 <br/><br/>
 # Installation
