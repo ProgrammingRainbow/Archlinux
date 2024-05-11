@@ -27,49 +27,80 @@ Be careful it is not your hard drive or ssd.
 The partition `part /` is the device with your system partition.
 
 We will use the cat command to write the image to the USB. Change directory to where ever you downloaded the file.
-
-    # cd ~/Downloads
-    # cat archlinux-*-x86_64.iso > /dev/sdX
-
+```
+cd ~/Downloads
+cat archlinux-*-x86_64.iso > /dev/sdX
+```
+<br/><br/>
 # Installation
 You will need to boot your system from the USB drive. It may simply need to reboot with the USB left in.
 You most likely need to know how to tell your bios to boot from USB devices.
 It may be something like pressing `escape`, `F5`, `F8`, `F10` or `F11` during boot up. Search your device and boot from USB.
+<br/><br/>
 ## Setup keyboard
 If you are using a US keyboard you can skip this step.
+<br/><br/>
 ### List available keyboard keymaps
-If you would like to see a list keyboard use this command.
 ```
-    localectl list-keymaps
+localectl list-keymaps
 ```
 Use the arrow keys or `j`, `k` to move up or down the list. To quit use the `q` key.
 <br/><br/>
 ### Set keyboard keymap
 Here is an example of setting the keyboard to the UK keymap.
 ```
-    loadkeys uk
+loadkeys uk
 ```
-## Setup Internet Connection
+<br/><br/>
+## Make sure network device is enabled
+```
+ip link
+```
+<br/><br/>
+## Setup Wireless Internet Connection
+If you have a wired connection, or using a VM, you are probably automatically online.
+<br/><br/>
 ### List Wifi adapter
-If you need to setup wireless internet first find the name of your wife ADAPTER.
-
-    # iwctl device list | grep station | cut -f 3 -d " "
-
-This will be your ADAPTER name. The name of your network is your SSID.
+If you need to setup wireless internet first find the name of your wifi DEVICE. On the left i should have a name for example `wlan0` and on the right `station`.
+```
+iwctl device list
+```
+This will be your DEVICE name. The name of your network you're connecting to is "SSID" in double quotations.
+<br/><br/>
 ### Connect Wifi to internet
-Replace ADAPTER and SSID below with their names. You will be prompted for a password to your SSID.
-
-    # iwctl station ADAPTER connect SSID
-
-### Check Wifi or Wired connection
+Replace DEVICE and SSID below with their names. You will be prompted for a password to your SSID.
+```
+iwctl station DEVICE connect "SSID"
+```
+<br/><br/>
+## Check Wifi or Wired connection
 Lets check if you're online.
-
-    # ping archlinux.org
-
-### Update the system clock
-
-    # timedatectl set-ntp true
-
+```
+ping archlinux.org
+```
+<br/><br/>
+## Connect with SSH
+### Set a root password
+```
+passwd
+```
+<br/><br/>
+### Get host ip address
+```
+ip a
+```
+<br/><br/>
+### Connect from guest machine
+Using the ip address above as IP on the guest system that is on the same network.
+```
+ssh root@IP
+```
+<br/><br/>
+## Make sure system clock is correct.
+```
+timedatectl
+```
+<br/><br/>
 ## Create Partitions
 You will need to create some partitions to install Arch Ainux on. This will permanently destroy any data on the device.
 You have been warned. I will assume you have a device that you can create partitions on.
