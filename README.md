@@ -132,6 +132,7 @@ Print the partition table again with `p`. If it all looks good you can write it 
 ## Format partitions
 If your device is /dev/sdX then partition 1 will be /dev/sdX1. It is your job to know which partition you are formating. I am just giving examples.
 ### Format EFI/boot partiton
+Replace /dev/sdX1 with your EFI partition.
 ```
 mkfs.fat -F32 /dev/sdX1
 ```
@@ -153,7 +154,7 @@ mkfs.btrfs /dev/sdX2
 ## Mount partitions EXT4
 ### Mount root partition first to /mnt
 ```
-mount /dev/vda3 /mnt
+mount /dev/sdX3 /mnt
 ```
 ### Mount boot partition, creating the directory if needed
 ```
