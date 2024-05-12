@@ -121,12 +121,16 @@ lsblk
 ```
 fdisk /dev/sdX
 ```
-Print the partition table with `p`. If you don't see "Disklable type: gpt" then press `g` to set it.\
+Print the partition table with `p`. If you don't see "Disklable type: gpt" then press `g` to set it.
+<br/><br/>
 Create the EFI Boot partition with `n`. Accept all the defaults until "Last sector" input `+512M` or `+1G`.\
-Set this partition type as "EFI System" with `t` then `1`.\
+Set this partition type as "EFI System" with `t` then `1`.
+<br/><br/>
 Optionally Create a swap partition with `n`. Accept all the defaults until "Last sector" and input something like `+4G`.\
-Set this partition type as "Linux Swap" with `t` and `19`.\
-Create the root partition with `n` and accept all the defaults to the end.\
+Set this partition type as "Linux Swap" with `t` and `19`.
+<br/><br/>
+Create the root partition with `n` and accept all the defaults to the end.
+<br/><br/>
 Print the partition table again with `p`. If it all looks good you can write it with `w` and quit with `q`.
 <br/><br/>
 ## Format partitions
