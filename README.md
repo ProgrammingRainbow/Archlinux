@@ -110,33 +110,66 @@ timedatectl
 You will need to create some partitions to install Arch Ainux on. This will permanently destroy any data on the device.
 You have been warned. I will assume you have a device that you can create partitions on.
 Again any existing partitions will be destroyed along with all data held in them. Get a list of partitions.
+```
+fdisk -l
+```
+or 
+```
+lsblk
+```
 
-    # fdisk -l
-
-Edit the device with fdisk. Replace X with the device letter you are willing to loose all data on.
-
-    # fdisk /dev/sdX
-
+```
+fdisk /dev/sdX
+```
+Print the partition table with `p`. If you don't see "Disklable type: gpt" then press `g` to set it.\
+Create the EFI Boot partition with `n`. Accept all the defaults until "Last sector" input `+512M` or `+1G`.\
+Set this partition type as "EFI System" with `t` then `1`.\
+Optionally Create a swap partition with `n`. Accept all the defaults until "Last sector" and input something like `+4G`.\
+Set this partition type as "Linux Swap" with `t` and `19`.\
+Create the root partition with `n` and accept all the defaults to the end.\
+Print the partition table again with `p`. If it all looks good you can write it with `w` and quit with `q`.
+<br/><br/>
 ## Format partitions
-### Format EFI/boot partitoin
-Replace /dev/sdX1 with your EFI partition.
-
-    # mkfs.fat -F32 /dev/sdX1
-
+If your device is /dev/sdX then partition 1 will be /dev/sdX1. It is your job to know which partition you are formating. I am just giving examples.
+### Format EFI/boot partiton
+```
+mkfs.fat -F32 /dev/sdX1
+```
 ### If using swap partition
 Replace /dev/sdx2 with your swap partition.
-
-    # mkswap /dev/sdX2
-
+```
+mkswap /dev/sdX2
+```
 ### Format your system partition
-Replace /dev/sdX3 with your system partition.
-
-    # mkfs.ext4 /dev/sdX3
-
-## Mount partitions
+Replace /dev/sdX3 with your system partition. Format as "ext4" or "btrfs".
 ```
-mount /dev/vda2 /mnt
+mkfs.ext4 /dev/sdX3
 ```
+or
+```
+mkfs.btrfs /dev/sdX2
+```
+<br/><br/>
+## Mount partitions EXT4
+### Mount root partition first to /mnt
+```
+mount /dev/vda3 /mnt
+```
+### Mount boot partition, creating the directory if needed
+```
+mount --mkdir /dev/sdX1 /mnt/boot
+```
+### Mount optional swap partition
+```
+swapon /dev/sdX2
+```
+<br/><br/>
+## Mount partitions for BTRFS
+### Mount root partition first to /mnt
+```
+mount /dev/vda3 /mnt
+```
+### If using btrfs then create subvolumes and remount them.
 ```
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
@@ -163,10 +196,6 @@ mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,sub
 mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/vda1 /mnt/boot
 ```
 
-    # mount /dev/sdX3 /mnt
-    # mkdir /mnt/boot
-    # mkdir /mnt/boot/efi
-    # mount /dev/sdX1 /mnt/boot/efi
 
 ## Update repository & install packages
 ### Run Reflector
