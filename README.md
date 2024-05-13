@@ -157,24 +157,29 @@ mkfs.btrfs /dev/sdX2
 <br/><br/>
 ## Mount partitions EXT4
 ### Mount root partition first to /mnt
+Replace sdX3 with your root partition.
 ```
-mount /dev/sdX3 /mnt
+mount -o rw,noatime,discard,data=ordered /dev/sdX3 /mnt
 ```
 ### Mount boot partition, creating the directory if needed
+Replace sdX1 with your EFI boot partition.
 ```
-mount --mkdir /dev/sdX1 /mnt/boot
+mkdir /mnt/boot
+mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/sdX1 /mnt/boot
 ```
 ### Mount optional swap partition
+Replace sdX2 with your swap partition.
 ```
 swapon /dev/sdX2
 ```
 <br/><br/>
 ## Mount partitions for BTRFS
 ### Mount root partition first to /mnt
+Replace sdX3 with your root partition.
 ```
-mount /dev/vda3 /mnt
+mount /dev/sdX3 /mnt
 ```
-### If using btrfs then create subvolumes and remount them.
+### Create subvolumes
 ```
 btrfs subvolume create /mnt/@
 btrfs subvolume create /mnt/@home
@@ -182,26 +187,33 @@ btrfs subvolume create /mnt/@log
 btrfs subvolume create /mnt/@pkg
 btrfs subvolume create /mnt/@.snapshots
 ```
+### Unmount root partition
 ```
 umount /mnt
 ```
+### Mount root subvolume on /mnt
+Replace sdX3 with your root partion.
 ```
-sudo mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
+sudo mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/sdX3 /mnt
 ```
+### Create needed directories in root subvolume
 ```
 mkdir /mnt/{boot,home,var/log,var/cache/pacman/pkg,.snapshots}
 ```
+### Mount rest of subvolumes
+Replace sdX3 with the root partiton.
 ```
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/sdX3 /mnt/home
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/sdX3 /mnt/var/log
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/sdX3 /mnt/var/cache/pacman/pkg
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/sdX3 /mnt/.snapshots
 ```
+### Mount EFI boot partition
+Replace sdX1 with your EFI partition.
 ```
 mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/vda1 /mnt/boot
 ```
-
-
+<br/><br/>
 ## Update repository & install packages
 ### Run Reflector
 Reflector prioritizes closer or faster servers for use with pacman.
