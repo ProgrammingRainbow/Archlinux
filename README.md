@@ -110,6 +110,7 @@ timedatectl
 You will need to create some partitions to install Arch Ainux on. This will permanently destroy any data on the device.
 You have been warned. I will assume you have a device that you can create partitions on.
 Again any existing partitions will be destroyed along with all data held in them. Get a list of partitions.
+### List devices
 ```
 fdisk -l
 ```
@@ -117,7 +118,8 @@ or
 ```
 lsblk
 ```
-
+### fdisk desired device
+Replace sdX with your desired device it may be for example "sda", "vda" or "nvme0n1".
 ```
 fdisk /dev/sdX
 ```
@@ -152,30 +154,30 @@ mkfs.ext4 /dev/sdX3
 ```
 or
 ```
-mkfs.btrfs /dev/sdX2
+mkfs.btrfs /dev/sdX3
 ```
 <br/><br/>
 ## Mount partitions EXT4
 ### Mount root partition first to /mnt
-Replace sdX3 with your root partition.
+Replace /dev/sdX3 with your root partition.
 ```
 mount -o rw,noatime,discard,data=ordered /dev/sdX3 /mnt
 ```
 ### Mount boot partition, creating the directory if needed
-Replace sdX1 with your EFI boot partition.
+Replace /dev/sdX1 with your EFI boot partition.
 ```
 mkdir /mnt/boot
 mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/sdX1 /mnt/boot
 ```
 ### Mount optional swap partition
-Replace sdX2 with your swap partition.
+Replace /dev/sdX2 with your swap partition.
 ```
 swapon /dev/sdX2
 ```
 <br/><br/>
 ## Mount partitions for BTRFS
 ### Mount root partition first to /mnt
-Replace sdX3 with your root partition.
+Replace /dev/sdX3 with your root partition.
 ```
 mount /dev/sdX3 /mnt
 ```
@@ -192,16 +194,16 @@ btrfs subvolume create /mnt/@.snapshots
 umount /mnt
 ```
 ### Mount root subvolume on /mnt
-Replace sdX3 with your root partion.
+Replace /dev/sdX3 with your root partion.
 ```
-sudo mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/sdX3 /mnt
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/sdX3 /mnt
 ```
 ### Create needed directories in root subvolume
 ```
 mkdir /mnt/{boot,home,var/log,var/cache/pacman/pkg,.snapshots}
 ```
 ### Mount rest of subvolumes
-Replace sdX3 with the root partiton.
+Replace /dev/sdX3 with the root partiton.
 ```
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/sdX3 /mnt/home
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/sdX3 /mnt/var/log
@@ -213,17 +215,26 @@ Replace sdX1 with your EFI partition.
 ```
 mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/vda1 /mnt/boot
 ```
+### Mount optional swap partition
+Replace /dev/sdX2 with your swap partition.
+```
+swapon /dev/sdX2
+```
 <br/><br/>
 ## Update repository & install packages
+### Enable ParallelDownloads
+```
+sed -i "s/^#Parallel/Parallel/" /etc/pacman.conf
+```
 ### Run Reflector
 Reflector prioritizes closer or faster servers for use with pacman.
-
-    # reflector
-
+```
+reflector
+```
 ### Sync pacman repository
-
-    # pacman -Syy
-
+```
+pacman -Syy
+```
 ### Install Arch Linux with KDE Plasma
 Use pacstrap to install a full KDE Plasma system all at once.
 
