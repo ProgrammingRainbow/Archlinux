@@ -149,7 +149,7 @@ Replace /dev/sdX1 with your EFI partition.
 ```
 mkfs.fat -F32 /dev/sdX1
 ```
-### If using swap partition
+### If using swap partition (Legacy)
 Replace /dev/sdx2 with your swap partition.
 ```
 mkswap /dev/sdX2
@@ -173,7 +173,7 @@ Replace /dev/sdX1 with your EFI boot partition.
 mkdir /mnt/boot
 mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/sdX1 /mnt/boot
 ```
-### Mount optional swap partition
+### Mount optional swap partition (Legacy)
 Replace /dev/sdX2 with your swap partition.
 ```
 swapon /dev/sdX2
@@ -225,7 +225,7 @@ Replace sdX1 with your EFI partition.
 ```
 mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/vda1 /mnt/boot
 ```
-### Mount optional swap partition
+### Mount optional swap partition (Legacy)
 Replace /dev/sdX2 with your swap partition.
 ```
 swapon /dev/sdX2
