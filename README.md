@@ -71,7 +71,7 @@ If you need to setup wireless internet first find the name of your wifi DEVICE. 
 ```
 iwctl device list
 ```
-This will be your DEVICE name. The name of your network you're connecting to is "SSID" in double quotations.
+This will be your DEVICE name. The name of your network you're connecting to is `"SSID"` in double quotations.
 ### Connect Wifi to internet
 Replace DEVICE and SSID below with their names. You will be prompted for a password to your SSID.
 ```
