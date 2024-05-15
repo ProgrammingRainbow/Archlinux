@@ -120,6 +120,8 @@ or
 lsblk
 ```
 ### fdisk desired device
+WARNING!! Changing `Disklable type` will destroy all exisitng data on device. If your dual booting read the above warnings. If Dual booting read the warnings above agian. You can only add a root partition or swap into existing space and nothing else. You have been warned again!
+<br/><br/>
 Replace sdX with your desired device it may be for example "sda", "vda" or "nvme0n1".
 ```
 fdisk /dev/sdX
@@ -134,11 +136,15 @@ Set this partition type as "Linux Swap" with `t` and `19`.
 <br/><br/>
 Create the root partition with `n` and accept all the defaults to the end.
 <br/><br/>
+WARNING!! This is the point of no return. When you press `w` that acually writes the partition table. Quitting before this will not change the partition table.
+<br/><br/>
 Print the partition table again with `p`. If it all looks good you can write it with `w` and quit with `q`.
 <br/><br/>
 ## Format partitions
 If your device is /dev/sdX then partition 1 will be /dev/sdX1. It is your job to know which partition you are formating. I am just giving examples.
 ### Format EFI/boot partiton
+WARNING!! If you are dual booting do `NOT` format your EFI partition. Doing so will remove the existing data for your other operating systems. If you are dual booting skip this step.
+<br/><br/>
 Replace /dev/sdX1 with your EFI partition.
 ```
 mkfs.fat -F32 /dev/sdX1
@@ -149,13 +155,13 @@ Replace /dev/sdx2 with your swap partition.
 mkswap /dev/sdX2
 ```
 ### Format your system partition
-Replace /dev/sdX3 with your system partition. Format as "ext4" or "btrfs".
+Replace /dev/sdX3 with your system partition. Format as "ext4" or "btrfs". I recommend using BTRFS not EXT4, however, there is instructions for both.
 ```
-mkfs.ext4 /dev/sdX3
+mkfs.btrfs /dev/sdX3
 ```
 or
 ```
-mkfs.btrfs /dev/sdX3
+mkfs.ext4 /dev/sdX3
 ```
 <br/><br/>
 ## Mount partitions EXT4
