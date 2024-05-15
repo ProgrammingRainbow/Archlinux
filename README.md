@@ -1,11 +1,10 @@
 # Arch Linux Installation Guide.
 ## Overview
-This guide will walk you through the steps needed to install a fully functional Arch Linux Desktop.
-The focus is KDE, but steps for XFCE will also be shown.
-I use an install script to help me remember and automate most of the steps.
-There are also some config and skel files included.
-I also recommend using the official Arch Linux install guide for support.
-I often find answers to my problems hidden there.
+This guide will walk you through the steps needed to install a fully functional Arch Linux Desktop. 
+The focus is on KDE, but steps for XFCE will also be provided. 
+This will be a UEFI/systemd-boot install, not a BIOS/Grub install. 
+The BTRFS filesystem is the focus, but EXT4 is included. Zram is used, but swap is also shown. 
+I recommend using the official Arch Linux install guide for support.
 
 https://wiki.archlinux.org/index.php/Installation_guide
 
@@ -15,18 +14,22 @@ The official Arch Linux download page. https://archlinux.org/download/
 
 A direct link to the latest image. https://geo.mirror.pkgbuild.com/iso/latest/archlinux-x86_64.iso
 
-### Create a bootable USB
-WARNING! All data on the USB device will be permanently lost.
-WARNING! Be sure to check device size and mount points to make sure it is your USB. You should remove all other storage divices just to be safe.
-To find the name of your USB device. Use the command lsblk.
+
+
+
+### Create a Bootable USB
+WARNING! All data on the USB device will be permanently lost. \
+WARNING! Be sure to check the device size and mount points to make sure it is your USB. All other storage devices should be removed just to be safe. \
+To find the name of your USB device, use the command `lsblk`.
 ```
 lsblk
 ```
-Be sure to know the name of your USB. `/dev/sdX` where X is the letter of your USB.
-Be careful it is not your hard drive or ssd.
+
+Be sure to know the name of your USB. It will be `/dev/sdX` where sdX is the name of your USB device. 
+Be careful it is not your hard drive or SSD. 
 The partition `part /` is the device with your system partition. That is NOT the device you want to write to.
 
-We will use the dd command to write the image to the USB. Change directory to where ever you downloaded the file.
+We will use the `dd` command to write the image to the USB. Change the directory to wherever you downloaded the file.
 ```
 cd ~/Downloads
 dd bs=4M if=archlinux-x86_64.iso of=/dev/sdX conv=fsync oflag=direct status=progress
