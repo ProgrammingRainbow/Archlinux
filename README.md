@@ -13,10 +13,6 @@ https://wiki.archlinux.org/index.php/Installation_guide
 The official Arch Linux download page. https://archlinux.org/download/
 
 A direct link to the latest image. https://geo.mirror.pkgbuild.com/iso/latest/archlinux-x86_64.iso
-
-
-
-
 ### Create a Bootable USB
 WARNING! All data on the USB device will be permanently lost. \
 WARNING! Be sure to check the device size and mount points to make sure it is your USB. All other storage devices should be removed just to be safe. \
@@ -24,7 +20,6 @@ To find the name of your USB device, use the command `lsblk`.
 ```
 lsblk
 ```
-
 Be sure to know the name of your USB. It will be `/dev/sdX` where sdX is the name of your USB device. 
 Be careful it is not your hard drive or SSD. 
 The partition `part /` is the device with your system partition. That is NOT the device you want to write to.
@@ -36,9 +31,9 @@ dd bs=4M if=archlinux-x86_64.iso of=/dev/sdX conv=fsync oflag=direct status=prog
 ```
 <br/><br/>
 # Installation
-You will need to boot your system from the USB drive. It may simply need to reboot with the USB left in.
-You most likely need to know how to tell your bios to boot from USB devices.
-It may be something like pressing `escape`, `F5`, `F8`, `F10` or `F11` during boot up. Search your device and boot from USB.
+You will need to boot your system from the USB drive. It may be as simply as rebooting with the USB left plugged in.
+Or more likely you need to know how to tell your bios to boot from the USB device.
+It may be something like pressing `Escape`, `F5`, `F8`, `F10` or `F11` during boot up. Search your device and boot from USB.
 <br/><br/>
 ## Setup keyboard
 If you are using a US keyboard you can skip this step.
