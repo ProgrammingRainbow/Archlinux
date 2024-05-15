@@ -154,17 +154,14 @@ Replace /dev/sdx2 with your swap partition.
 ```
 mkswap /dev/sdX2
 ```
+<br/><br/>
+## Create and mount EXT4 partition (Legacy)
+I recommend using BTRFS not EXT4, however, there is instructions for both.
 ### Format your system partition
-Replace /dev/sdX3 with your system partition. Format as "ext4" or "btrfs". I recommend using BTRFS not EXT4, however, there is instructions for both.
-```
-mkfs.btrfs /dev/sdX3
-```
-or
+Replace /dev/sdX3 with your system partition.
 ```
 mkfs.ext4 /dev/sdX3
 ```
-<br/><br/>
-## Mount partitions EXT4
 ### Mount root partition first to /mnt
 Replace /dev/sdX3 with your root partition.
 ```
@@ -182,7 +179,13 @@ Replace /dev/sdX2 with your swap partition.
 swapon /dev/sdX2
 ```
 <br/><br/>
-## Mount partitions for BTRFS
+## Create and mount BTRFS partitions (Recommended)
+I recommend using BTRFS not EXT4, however, there is instructions for both.
+### Format your system partition
+Replace /dev/sdX3 with your system partition.
+```
+mkfs.btrfs /dev/sdX3
+```
 ### Mount root partition first to /mnt
 Replace /dev/sdX3 with your root partition.
 ```
