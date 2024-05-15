@@ -105,9 +105,12 @@ timedatectl
 ```
 <br/><br/>
 ## Create Partitions
-You will need to create some partitions to install Arch Ainux on. This will permanently destroy any data on the device.
-You have been warned. I will assume you have a device that you can create partitions on.
-Again any existing partitions will be destroyed along with all data held in them. Get a list of partitions.
+You will need to create some partitions to install Arch Ainux on.
+<br/><br/>
+WARNING!! This will permanently destroy some or all data on the device. Please for your own safety remove all unnesseary data storage devices. 
+Please backup any data that is on the device you are about to partition that you do not wish to loose. Please check and double check that you are partitioning the correct device.
+<br/><br/>
+WARNING!! If you are Dual booting from the same device do not change the partition table type, do not change the EFI partition, do not change any partition needed for other systems. The only thing you can do is create a new root partition or optionally a new swap partition. Do not delete or change any other partition, you have been warned. Resizing a partition to make room is beyond the scope of these instructions.
 ### List devices
 ```
 fdisk -l
