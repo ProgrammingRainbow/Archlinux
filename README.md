@@ -245,16 +245,25 @@ reflector
 ```
 pacman -Syy
 ```
-### Install Arch Linux with KDE Plasma
+<br/><br/>
+## Install KDE Plasma
 Use pacstrap to install a full KDE Plasma system all at once.
+```
+pacstrap -K /mnt base linux linux-firmware \
+htop iwd nano openssh smartmontools vim wget wireless_tools wpa_supplicant xdg-utils \
+ark dolphin egl-wayland konsole kwrite plasma-meta plasma-workspace \
+intel-media-driver libva-intel-driver libva-mesa-driver mesa vulkan-intel vulkan-radeon xf86-video-amdgpu xf86-video-ati xf86-video-nouveau xf86-video-vmware xorg-server xorg-xinit \
+sddm \
+networkmanager \
 
-    # pacstrap /mnt base linux-firmware linux grub efibootmgr iwd sudo nano vim \
-    pacman-contrib htop base-devel xorg-server mesa-demos plasma plasma-wayland-session \
+
+grub efibootmgr sudo \
+    pacman-contrib base-devel xorg-server mesa-demos plasma plasma-wayland-session \
     kde-applications autopep8 chromium ctags firefox flake8 git hunspell-en_gb \
     pulseaudio-bluetooth python-jedi python-language-server python-mccabe python-numpy \
     python-pip python-pycodestyle python-pydocstyle python-pyflakes python-pygame \
     python-pylint python-rope python-wheel yapf
-
+```
 
 ### Install Arch Linux with XFCE
 Use pacstrap to install a full XFCE system all at once.
