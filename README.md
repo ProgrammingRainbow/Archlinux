@@ -210,7 +210,7 @@ mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,sub
 ```
 ### Create needed directories in root subvolume
 ```
-mkdir /mnt/{boot,home,var/log,var/cache/pacman/pkg,.snapshots}
+mkdir -p /mnt/{boot,home,var/log,var/cache/pacman/pkg,.snapshots}
 ```
 ### Mount rest of subvolumes
 Replace /dev/sdX3 with the root partiton.
@@ -220,6 +220,13 @@ mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,sub
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/sdX3 /mnt/var/cache/pacman/pkg
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/sdX3 /mnt/.snapshots
 ```
+
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
+
 ### Mount EFI boot partition
 Replace sdX1 with your EFI partition.
 ```
@@ -250,11 +257,15 @@ pacman -Syy
 Use pacstrap to install a full KDE Plasma system all at once.
 ```
 pacstrap -K /mnt base linux linux-firmware \
-htop iwd nano openssh smartmontools vim wget wireless_tools wpa_supplicant xdg-utils \
-ark dolphin egl-wayland konsole kwrite plasma-meta plasma-workspace \
 intel-media-driver libva-intel-driver libva-mesa-driver mesa vulkan-intel vulkan-radeon xf86-video-amdgpu xf86-video-ati xf86-video-nouveau xf86-video-vmware xorg-server xorg-xinit \
+htop iwd nano openssh smartmontools vim wget wireless_tools wpa_supplicant xdg-utils \
+pipewire plasma-meta \
+
+ark dolphin egl-wayland konsole kwrite plasma-meta plasma-workspace \
+
 sddm \
 networkmanager \
+pipewire \
 
 
 grub efibootmgr sudo \
