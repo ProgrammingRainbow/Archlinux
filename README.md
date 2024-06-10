@@ -257,15 +257,25 @@ pacman -Syy
 Use pacstrap to install a full KDE Plasma system all at once.
 ```
 pacstrap -K /mnt base linux linux-firmware \
-intel-media-driver libva-intel-driver libva-mesa-driver mesa vulkan-intel vulkan-radeon xf86-video-amdgpu xf86-video-ati xf86-video-nouveau xf86-video-vmware xorg-server xorg-xinit \
+\
+base-devel btrfs-progs efibootmgr zram-generator \
+\
 htop iwd nano openssh smartmontools vim wget wireless_tools wpa_supplicant xdg-utils \
-pipewire plasma-meta \
+\
+intel-media-driver libva-intel-driver libva-mesa-driver mesa vulkan-intel vulkan-radeon xf86-video-amdgpu xf86-video-ati xf86-video-nouveau xf86-video-vmware xorg-server xorg-xinit \
+\
+pipewire pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse wireplumber \
+\
+plasma-meta \
 
-ark dolphin egl-wayland konsole kwrite plasma-meta plasma-workspace \
 
-sddm \
-networkmanager \
-pipewire \
+
+ark dolphin egl-wayland konsole kwrite plasma-workspace \
+
+network-manager-applet
+
+
+
 
 
 grub efibootmgr sudo \
