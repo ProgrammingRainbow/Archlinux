@@ -220,13 +220,13 @@ mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,sub
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/sdX3 /mnt/var/cache/pacman/pkg
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/sdX3 /mnt/.snapshots
 ```
-
+```
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
-
+```
 ### Mount EFI boot partition
 Replace sdX1 with your EFI partition.
 ```
@@ -257,33 +257,16 @@ pacman -Syy
 Use pacstrap to install a full KDE Plasma system all at once.
 ```
 pacstrap -K /mnt base linux linux-firmware \
-\
 base-devel btrfs-progs efibootmgr zram-generator \
-\
 htop iwd nano openssh smartmontools vim wget wireless_tools wpa_supplicant xdg-utils \
-\
-intel-media-driver libva-intel-driver libva-mesa-driver mesa vulkan-intel vulkan-radeon xf86-video-amdgpu xf86-video-ati xf86-video-nouveau xf86-video-vmware xorg-server xorg-xinit \
-\
+intel-media-driver libva-intel-driver libva-mesa-driver mesa vulkan-intel vulkan-radeon \
+xf86-video-amdgpu xf86-video-ati xf86-video-nouveau xf86-video-vmware xorg-server xorg-xinit \
 pipewire pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse wireplumber \
-\
-plasma-meta \
+ark dolphin egl-wayland konsole kate network-manager-applet plasma-meta plasma-workspace
+```
+```
+pacman-contrib kde-applications-meta firefox ntfs3g mesa-demos git pulseaudio-bluetooth
 
-
-
-ark dolphin egl-wayland konsole kwrite plasma-workspace \
-
-network-manager-applet
-
-
-
-
-
-grub efibootmgr sudo \
-    pacman-contrib base-devel xorg-server mesa-demos plasma plasma-wayland-session \
-    kde-applications autopep8 chromium ctags firefox flake8 git hunspell-en_gb \
-    pulseaudio-bluetooth python-jedi python-language-server python-mccabe python-numpy \
-    python-pip python-pycodestyle python-pydocstyle python-pyflakes python-pygame \
-    python-pylint python-rope python-wheel yapf
 ```
 
 ### Install Arch Linux with XFCE
