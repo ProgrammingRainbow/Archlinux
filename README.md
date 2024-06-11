@@ -285,15 +285,41 @@ Use pacstrap to install a full XFCE system all at once.
 
 ### Generate fstab
 Generate for your new system.
-
-    # genfstab -U /mnt >> /mnt/etc/fstab
-
+```
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+```
+cp /etc/systemd/network/* /mnt/etc/systemd/network
+```
+```
+ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
+```
 ## Configure system in chroot environment
 ### Chroot
 Use arch-chroot to change roots into new system.
-
-    # arch-chroot /mnt
-
+```
+arch-chroot /mnt
+```
+```
+bootctl install
+```
+```
+blkid -s PARTUUID -o value /dev/vda2
+```
+/boot/loader/entries/archlinux.conf
+```
+title Arch Linux (linux)
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=PARTUUID=554adede-7cdc-41e4-849f-93289f06afa2 zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
+```
+/boot/loader/entries/archlinux-fallback.conf
+```
+title Arch Linux (linux-fallback)
+linux /vmlinuz-linux
+initrd /initramfs-linux-fallback.img
+options root=PARTUUID=554adede-7cdc-41e4-849f-93289f06afa2 zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
+```
 ### Select your Locale
 Uncomment your locale by removing the # infront of your locale. English UK is "en_GB.UTF-8".
 
