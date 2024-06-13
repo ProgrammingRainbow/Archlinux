@@ -306,19 +306,37 @@ bootctl install
 ```
 blkid -s PARTUUID -o value /dev/vda2
 ```
-/boot/loader/entries/archlinux.conf
+```
+nano /boot/loader/entries/archlinux.conf
+```
 ```
 title Arch Linux (linux)
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
-options root=PARTUUID=554adede-7cdc-41e4-849f-93289f06afa2 zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
+options root=PARTUUID={PARTUUID} zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
 ```
-/boot/loader/entries/archlinux-fallback.conf
+or echo
+```
+echo "title Arch Linux (linux)
+linux /vmlinuz-linux
+initrd /initramfs-linux.img
+options root=PARTUUID="$(blkid -s PARTUUID -o value /dev/vda2) "zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs" > /boot/loader/entries/archlinux.conf
+```
+```
+nano /boot/loader/entries/archlinux-fallback.conf
+```
 ```
 title Arch Linux (linux-fallback)
 linux /vmlinuz-linux
 initrd /initramfs-linux-fallback.img
-options root=PARTUUID=554adede-7cdc-41e4-849f-93289f06afa2 zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
+options root={PARTUUID} zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
+```
+or echo
+```
+echo "title Arch Linux (linux-fallback)
+linux /vmlinuz-linux
+initrd /initramfs-linux-fallback.img
+options root=PARTUUID="$(blkid -s PARTUUID -o value /dev/vda2) "zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs" > /boot/loader/entries/archlinux-fallback.conf
 ```
 ### Select your Locale
 Uncomment your locale by removing the # infront of your locale. English UK is "en_GB.UTF-8".
