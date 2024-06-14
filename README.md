@@ -35,7 +35,7 @@ You will need to boot your system from the USB drive. It may be as simply as reb
 Or more likely you need to know how to tell your bios to boot from the USB device.
 It may be something like pressing `Escape`, `F5`, `F8`, `F10` or `F11` during boot up. Search your device and boot from USB.
 <br/><br/>
-## Setup keyboard
+## Setup keyboard and Font
 If you are using a US keyboard you can skip this step.
 ### List available keyboard keymaps
 ```
@@ -47,10 +47,7 @@ Here is an example of setting the keyboard to the UK keymap.
 ```
 loadkeys uk
 ```
-<br/><br/>
-## Change the Console Font
-This is strictly an optional step.
-### list available fonts.
+### List available fonts.
 ```
 ls /usr/share/kbd/consolefonts/ | more
 ```
@@ -59,26 +56,27 @@ ls /usr/share/kbd/consolefonts/ | more
 setfont ter-132b
 ```
 <br/><br/>
-## Make sure network device is enabled
-```
-ip link
-```
-<br/><br/>
 ## Setup Wireless Internet Connection
 If you have a wired connection, or using a VM, you are probably automatically online.
 ### List Wifi adapter
-If you need to setup wireless internet first find the name of your wifi DEVICE. On the left i should have a name for example `wlan0` and on the right `station`.
+If you need to setup wireless internet first find the name of your wifi DEVICE. On the left i should have a name for example `wlan0` and on the right `station`. This will be your DEVICE name.
 ```
 iwctl device list
 ```
-This will be your DEVICE name. The name of your network you're connecting to is `"SSID"` in double quotations.
+### Scan Available Networks
+Replcace DEVICE with your device name. The Network Name will be your SSID.
+```
+iwctl station DEVICE scan
+```
+```
+iwctl station DEVICE get-networks
+```
 ### Connect Wifi to internet
-Replace DEVICE and SSID below with their names. You will be prompted for a password to your SSID.
+Replace DEVICE and SSID below with their names. SSID needs to be in quotes. You will be prompted for a password to your SSID.
 ```
 iwctl station DEVICE connect "SSID"
 ```
-<br/><br/>
-## Check Wifi or Wired connection
+### Check Wifi or Wired connection
 Lets check if you're online.
 ```
 ping archlinux.org
@@ -86,15 +84,16 @@ ping archlinux.org
 <br/><br/>
 ## Connect with SSH
 ### Set a root password
+A password is need to use ssh.
 ```
 passwd
 ```
-### Get host ip address
+### Get host IP Address
 ```
 ip a
 ```
 ### Connect from guest machine
-Using the ip address above as IP on the guest system that is on the same network.
+Using the ip address above as IP. It will prompt you for the password.
 ```
 ssh root@IP
 ```
