@@ -219,13 +219,6 @@ mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,sub
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/sdX3 /mnt/var/cache/pacman/pkg
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/sdX3 /mnt/.snapshots
 ```
-```
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
-```
 ### Mount EFI boot partition
 Replace sdX1 with your EFI partition.
 ```
@@ -469,20 +462,10 @@ Now it is time to reboot into your new Arch Linux system.
 
     # reboot
 
-# Other settings and fixes
-## Pygame & Pygame Zero
-### Install Pygame with pacman
-If you haven't already installed pygame use the official Arch Linux packages.
-Numpy is also required and we will use pip too.
-
-    # sudo pacman -S --needed python-pygame python-numpy python-pip python-wheel
-
-### Install Pygame Zero
-The official release is currently broken and not compatable with the latest python. 
-It also attempts to install a non working version of pygame.
-We will use the pip command to pull and install the development version without letting it install the pygame package that is not compatable.
-Please remember that this development version seems to require the `def update()` with `pass` or any other code in it to update the screen. 
-Without this projects from the books will not display if you have not added the update call.
-
-    # sudo pip install git+https://github.com/lordmauve/pgzero.git --no-deps --upgrade
-    # sudo pip install pyfxr
+```
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
+mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
+```
