@@ -257,7 +257,7 @@ pipewire pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse
 ark dolphin egl-wayland konsole kate network-manager-applet plasma-meta plasma-workspace
 ```
 ```
-pacman-contrib kde-applications-meta firefox ntfs3g mesa-demos git pulseaudio-bluetooth
+pacman-contrib libva-utils comsize mesa-demos firefox kde-applications-meta
 
 ```
 
