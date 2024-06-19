@@ -1,4 +1,6 @@
-https://wiki.archlinux.org/title/Installation_guide
+# Installing Archlinux in virt-manager
+## Setting up virt-manager
+https://wiki.archlinux.org/title/Installation_guide \
 https://archlinux.org/download/
 
 # Create a qemu image of at least 15G
@@ -12,6 +14,18 @@ sudo qemu-img create -f qcow2 archlinux.qcow2 15G
 # In virt-manager set Display Spice -> Listen type to None. Check OpenGL and select your GPU.
 
 # In virt-manager set Video -> Mode to Virtio for virGL and check 3D acceleration, or QXL for llvmpipe.
+```
+  <model type="virtio" heads="1" primary="yes">
+    <acceleration accel3d="yes"/>
+    <resolution x="1920" y="1080"/>
+  </model>
+```
+or
+```
+  <model type="qxl" ram="65536" vram="65536" vgamem="16384" heads="1" primary="yes">
+    <resolution x="1920" y="1080"/>
+  </model>
+```
 
 # Make sure virt-manager is using efi not mbr.
 # Replace these lines in virt-managers xml for archlinux.
