@@ -2,3 +2,5 @@
 
 [virt-manager archinstall](virt-manager-archinstall)\
 [virt-manager manual install](virt-manager-manual-install)
+
+![Screenshot](screenshot.png)
