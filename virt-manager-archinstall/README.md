@@ -31,7 +31,7 @@ or
   </model>
 ```
 
-Make sure virt-manager is using efi not mbr. \
+Make sure virt-manager is using efi not mbr. This is so we can use systemd-boot \
 Find and replace these lines.
 ```
   <os>
