@@ -7,6 +7,10 @@ https://wiki.archlinux.org/title/Installation_guide
 Download the archlinux iso. \
 https://archlinux.org/download/
 
+Install virt-manager
+```
+sudo pacman -S --needed virt-manager virt-viewer qemu-desktop dnsmasq
+```
 Create a qemu image of at least 15G
 ```
 cd /var/lib/libvirt/images
@@ -164,6 +168,10 @@ sudo systemctl disable sddm
 ```
 Reboot the VM.
 
+On Guest system install freerdp
+```
+sudo pacman -S --needed freerdp
+```
 list available xfreerdp key layouts. LAYOUT will be a hex number.
 ```
 xfreerdp3 /list:kbd
