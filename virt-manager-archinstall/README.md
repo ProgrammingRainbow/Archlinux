@@ -7,11 +7,11 @@ https://wiki.archlinux.org/title/Installation_guide
 Download the archlinux iso. \
 https://archlinux.org/download/
 
-Install virt-manager
+Install virt-manager.
 ```
 sudo pacman -S --needed virt-manager virt-viewer qemu-desktop dnsmasq
 ```
-Create a qemu image of at least 15G
+Create a qemu image of at least 15G.
 ```
 cd /var/lib/libvirt/images
 sudo qemu-img create -f qcow2 archlinux.qcow2 15G
@@ -127,7 +127,7 @@ sudo bash -c "echo 'setxkbmap gb' >> /usr/share/sddm/scripts/Xsetup"
 ```
 
 ## Setting up xrdp
-install needed packages to build xrdp xorgxrdp and pipewire-module-xrdp
+Install needed packages to build xrdp xorgxrdp and pipewire-module-xrdp.
 ```
 cd
 sudo pacman -S --needed git fuse imlib2 nasm cmocka check xorg-server-devel
@@ -158,21 +158,21 @@ Create an ~/.xinitrc so startx or xrdp will launch kde.
 echo "export DESKTOP_SESSION=plasma" > ~/.xinitrc
 echo "exec startplasma-x11" >> ~/.xinitrc
 ```
-Enable xrdp service
+Enable xrdp service.
 ```
 sudo systemctl enable xrdp
 ```
-Disable sddm service
+Disable sddm service.
 ```
 sudo systemctl disable sddm
 ```
 Reboot the VM.
 
-On Guest system install freerdp
+On Guest system install freerdp.
 ```
 sudo pacman -S --needed freerdp
 ```
-list available xfreerdp key layouts. LAYOUT will be a hex number.
+List available xfreerdp key layouts. LAYOUT will be a hex number.
 ```
 xfreerdp3 /list:kbd
 ```
