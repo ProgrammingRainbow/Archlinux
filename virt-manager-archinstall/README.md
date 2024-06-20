@@ -172,7 +172,34 @@ Check virt-manager for the IP address of the archlinux vm. USERNAME and PASSWD w
 ```
 xfreerdp3 /u:USERNAME /p:PASSWD /w:1366 /h:768 /v:IP /video /sound /rfx /network:lan /gfx /dynamic-resolution /bpp:32 /kbd:layout:LAYOUT
 ```
-
+## Setting up ssh
+On the host system enable sshd.
+```
+sudo systemctl enable sshd
+sudo systemctl start sshd
+```
+On the guest system log into the host using it's IP address and USERNAME. \
+You will be asked to make a fingerprint then for the password
+```
+ssh USERNAME@IP
+```
+If there is already an existing fingerprint that needs to be removed.
+```
+ssh-keygen -R IP
+```
+## Add Catppuccin color schemes for breeze.
+Git color schemes from this repo. There are 3 dark and 1 light.
+```
+cd
+git clone https://github.com/programmingrainbow/Archlinux
+cd Archlinux
+```
+Create a local/share folder if needed and copy the color-schemes folder there.
+```
+mkdir -p ~/.local/share
+cp -r color-schemes ~/.local/share
+```
+Set global theme to Breeze Dark or Breeze Light. Then in colors set one of the corresponding catppuccin color schemes.
 ## Use these mount points if repairing an install from iso.
 ```
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
