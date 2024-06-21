@@ -51,14 +51,14 @@ or
 ```
 
 Make sure virt-manager is using efi not mbr. This is so we can use systemd-boot \
-Find and replace these lines.
+There is an option when first creating the VM `Customize configuration before Install` that will give you the option to change BIOS to UEFI. If you miss this step you will need to find these lines in the XML.
 ```
   <os>
     <type arch="x86_64" machine="pc-q35-9.0">hvm</type>
     <boot dev="hd"/>
   </os>
 ```
-With these lines.
+Replace them With these lines.
 ```
   <os firmware="efi">
     <type arch="x86_64" machine="pc-q35-9.0">hvm</type>
