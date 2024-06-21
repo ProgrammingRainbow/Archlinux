@@ -107,8 +107,9 @@ Enable sudo with NOPASSWD for wheel group.
 sudo sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/sudoers
 ```
 Remove user specific config.
+Replace USERNAME with your username.
 ```
-sudo rm /etc/sudoers.d/00_pr
+sudo rm /etc/sudoers.d/00_USERNAME
 ```
 Allow Parallel downloads for pacman.
 ```
@@ -136,11 +137,15 @@ Change default cursor from Adwaita to breeze. This will fix sddm and other place
 ```
 sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
 ```
-Set a default keyboard for sddm if you don't want to see it set to US by default.
+Set a default keyboard for sddm if you don't want to see it set to US by default. \
+Get a list of available x11-keymaps.
+```
+localectl list-x11-keymap-layouts
+```
+Set an x11-keymap for sddm. Replace gb with your choosen x11-keymap.
 ```
 sudo bash -c "echo 'setxkbmap gb' >> /usr/share/sddm/scripts/Xsetup"
 ```
-
 ## Setting up xrdp
 Install needed packages to build xrdp xorgxrdp and pipewire-module-xrdp.
 ```
