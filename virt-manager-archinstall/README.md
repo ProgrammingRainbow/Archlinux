@@ -1,4 +1,5 @@
-# Installing Archlinux in virt-manager
+![Screenshot](screenshot.png)
+# Installing Archlinux in virt-manager with archinstall
 
 https://wiki.archlinux.org/title/Installation_guide
 
