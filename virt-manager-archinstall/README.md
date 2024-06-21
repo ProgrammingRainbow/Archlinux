@@ -36,7 +36,7 @@ In virt-manager Create a new VM with atleast 4G of ram and select the image crea
 In virt-manager set Display Spice -> Listen type to None. Check OpenGL and select your GPU.
 
 In virt-manager set Video -> Mode to Virtio for virGL and check 3D acceleration, or QXL for llvmpipe. \
-If nothing else this shows how to add a default resolution. Pay attention if `<model>` ends like this `/>` or like this `<model/>`
+If nothing else this shows how to add a default resolution. Pay attention if `<model>` ends like this `/>` or like this `</model>`. The first version is for single line. Simply remove the `/` and add the `</model>` to the line after the resolution line.
 ```
   <model type="virtio" heads="1" primary="yes">
     <acceleration accel3d="yes"/>
