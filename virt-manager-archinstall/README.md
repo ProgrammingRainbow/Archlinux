@@ -12,7 +12,20 @@ Install virt-manager.
 ```
 sudo pacman -S --needed virt-manager virt-viewer qemu-desktop dnsmasq
 ```
-Create a qemu image of at least 15G.
+Add youself to the the libvirt group.
+```
+sudo usermod -aG libvirt USERNAME
+```
+Enable and Start libvirtd service.
+```
+sudo systemctl enable libvirtd
+sudo systemctl start libvirtd
+```
+Open virt-manager. Under Edit->Preferences->General check Enable XML Editing. \
+If you do not see QEMU/KVM written in the center window go to File->Add Connection->Hypervisor select QEMU/KVM, check autoconnect and then click connect.
+
+## Create the Archlinux VM.
+Create a qemu image of at least 15G. This is optional or space saving. You can just create this in virt-manager later.
 ```
 cd /var/lib/libvirt/images
 sudo qemu-img create -f qcow2 archlinux.qcow2 15G
@@ -22,7 +35,8 @@ In virt-manager Create a new VM with atleast 4G of ram and select the image crea
 
 In virt-manager set Display Spice -> Listen type to None. Check OpenGL and select your GPU.
 
-In virt-manager set Video -> Mode to Virtio for virGL and check 3D acceleration, or QXL for llvmpipe.
+In virt-manager set Video -> Mode to Virtio for virGL and check 3D acceleration, or QXL for llvmpipe. \
+If nothing else this shows how to add a default resolution. Pay attention if `<model>` ends like this `/>` or like this `<model/>`
 ```
   <model type="virtio" heads="1" primary="yes">
     <acceleration accel3d="yes"/>
