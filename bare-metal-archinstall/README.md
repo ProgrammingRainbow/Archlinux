@@ -3,85 +3,78 @@
 
 https://wiki.archlinux.org/title/Installation_guide
 
-## Setting up virt-manager
+## Create install USB stick.
 
 Download the archlinux iso. \
 https://archlinux.org/download/
 
-Install virt-manager.
+To find the name of your USB device, use the command `lsblk`. \
+The name of your USB. It will be `/dev/sdX` where sdX is the name of your USB device. 
+Be careful it is not your hard drive or SSD. 
+The partition `part /` is the device with your system partition. That is NOT the device you want to write to.
 ```
-sudo pacman -S --needed virt-manager virt-viewer qemu-desktop dnsmasq
+lsblk
 ```
-Add youself to the the libvirt group.
+Use the `dd` command to write the image to the USB. Change the directory to wherever you downloaded the file. Replace `/dev/sdX` with the name of your device.
 ```
-sudo usermod -aG libvirt USERNAME
+cd ~/Downloads
+dd bs=4M if=archlinux-x86_64.iso of=/dev/sdX conv=fsync oflag=direct status=progress
 ```
-Enable and Start libvirtd service.
-```
-sudo systemctl enable libvirtd
-sudo systemctl start libvirtd
-```
-Open virt-manager. Under Edit->Preferences->General check Enable XML Editing. \
-If you do not see QEMU/KVM written in the center window go to File->Add Connection->Hypervisor select QEMU/KVM, check autoconnect and then click connect.
+## Prepare host system.
+You will need to boot your system from the USB drive. It may be something like pressing `Escape`, `F5`, `F8`, `F10` or `F11` during boot up.
 
-## Create the Archlinux VM.
-Create a qemu image of at least 15G. This is optional or space saving. You can just create this in virt-manager later.
-```
-cd /var/lib/libvirt/images
-sudo qemu-img create -f qcow2 archlinux.qcow2 15G
-```
-
-In virt-manager Create a new VM with atleast 4G of ram and select the image created above.
-
-In virt-manager set Display Spice -> Listen type to None. Check OpenGL and select your GPU.
-
-In virt-manager set Video -> Mode to Virtio for virGL and check 3D acceleration, or QXL for llvmpipe. \
-If nothing else this shows how to add a default resolution. Pay attention if `<model>` ends like this `/>` or like this `</model>`. The first version is for single line. Simply remove the `/` and add the `</model>` to the line after the resolution line.
-```
-  <model type="virtio" heads="1" primary="yes">
-    <acceleration accel3d="yes"/>
-    <resolution x="1920" y="1080"/>
-  </model>
-```
-or
-```
-  <model type="qxl" ram="65536" vram="65536" vgamem="16384" heads="1" primary="yes">
-    <resolution x="1920" y="1080"/>
-  </model>
-```
-
-Make sure virt-manager is using efi not mbr. This is so we can use systemd-boot \
-There is an option when first creating the VM `Customize configuration before Install` that will give you the option to change BIOS to UEFI. If you miss this step you will need to find these lines in the XML.
-```
-  <os>
-    <type arch="x86_64" machine="pc-q35-9.0">hvm</type>
-    <boot dev="hd"/>
-  </os>
-```
-Replace them With these lines.
-```
-  <os firmware="efi">
-    <type arch="x86_64" machine="pc-q35-9.0">hvm</type>
-    <firmware>
-      <feature enabled="no" name="enrolled-keys"/>
-      <feature enabled="yes" name="secure-boot"/>
-    </firmware>
-    <loader readonly="yes" secure="yes" type="pflash">/usr/share/edk2/x64/OVMF_CODE.secboot.4m.fd</loader>
-    <nvram template="/usr/share/edk2/x64/OVMF_VARS.4m.fd">/var/lib/libvirt/qemu/nvram/archlinux_VARS.fd</nvram>
-  </os>
-```
-
-## Install Archlinux.
-Boot VM with ISO mounted.
-
-List available keyboard layouts.
+If you are using a US keyboard you can skip this step. \
+List available keymaps.
 ```
 localectl list-keymaps
 ```
-Set keyboard layout.
+Here is an example of setting the UK keymap.
 ```
 loadkeys uk
 ```
+Set a password for the root user. SSH service is already running and accessable as root, but ssh a password set.
+```
+passwd
+```
+## Setup Wireless Connection (Optional)
+If you have a wired connection, or using a VM, you are probably automatically online.
+
+List Wifi adapter. For example `wlan0` and on the right `station`. This will be your DEVICE name.
+```
+iwctl device list
+```
+Scan Available Networks. Replcace DEVICE with your device name. The Network Name will be your SSID.
+```
+iwctl station DEVICE scan
+```
+Display the available SSID's.
+```
+iwctl station DEVICE get-networks
+```
+Connect Wifi to internet. Replace DEVICE and SSID below with their names. SSID needs to be in quotes. You will be prompted for a password to your SSID.
+```
+iwctl station DEVICE connect "SSID"
+```
+## Lets check if you're online.
+```
+ping archlinux.org
+```
+Get your IP address. For example 192.168.0.XXX.
+```
+ip a
+```
+## Connect the guest to the host system.
+On the guest system log into the host using it's IP address and USERNAME. \
+You will be asked to make a fingerprint then for the password
+```
+ssh USERNAME@IP
+```
+If there is already an existing fingerprint that needs to be removed.
+```
+ssh-keygen -R IP
+```
+
+
 
 Run reflector to get fastest servers.
 ```
@@ -199,21 +192,6 @@ xfreerdp3 /list:kbd
 Check virt-manager for the IP address of the archlinux vm. USERNAME and PASSWD will be the ones you created for this VM.
 ```
 xfreerdp3 /u:USERNAME /p:PASSWD /w:1366 /h:768 /v:IP /video /sound /rfx /network:lan /gfx /dynamic-resolution /bpp:32 /kbd:layout:LAYOUT
-```
-## Setting up ssh
-On the host system enable sshd.
-```
-sudo systemctl enable sshd
-sudo systemctl start sshd
-```
-On the guest system log into the host using it's IP address and USERNAME. \
-You will be asked to make a fingerprint then for the password
-```
-ssh USERNAME@IP
-```
-If there is already an existing fingerprint that needs to be removed.
-```
-ssh-keygen -R IP
 ```
 ## Add Catppuccin color schemes for breeze.
 Git color schemes from this repo. There are 3 dark and 1 light.
