@@ -71,9 +71,27 @@ Replace them With these lines.
   </os>
 ```
 
-## Install Archlinux.
 Boot VM with ISO mounted.
 
+## Login to host system with ssh.
+Set a password for the root user. SSH service is already running and accessable as root, but ssh a password set.
+```
+passwd
+```
+Get your IP address. For example 192.168.0.XXX.
+```
+ip a
+```
+On the guest system log into the host using it's IP address and root. \
+You will be asked to make a fingerprint then for the password
+```
+ssh root@IP
+```
+If there is already an existing fingerprint that needs to be removed.
+```
+ssh-keygen -R IP
+```
+## Install Archlinux.
 List available keyboard layouts.
 ```
 localectl list-keymaps
@@ -82,7 +100,6 @@ Set keyboard layout.
 ```
 loadkeys uk
 ```
-
 Run reflector to get fastest servers.
 ```
 reflector
@@ -99,25 +116,36 @@ Install Archlinux with btrfs and compression, systemd-boot, kde desktop and pipe
 ```
 archinstall
 ```
-Dismount install ISO and reboot.
+Accept the chroot into the new system.
 
-## Configuring KDE Plasma
 Enable sudo with NOPASSWD for wheel group.
 ```
-sudo sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/sudoers
+sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/sudoers
 ```
-Remove user specific config.
-Replace USERNAME with your username.
+Remove user specific config. Replace USERNAME with your username.
 ```
-sudo rm /etc/sudoers.d/00_USERNAME
+rm /etc/sudoers.d/00_*
+```
+Set zram to twice the size of ram.
+```
+echo "compression-algorithm = zstd" > /etc/systemd/zram-generator.conf
+echo "zram-size = ram * 2" >> /etc/systemd/zram-generator.conf
 ```
 Allow Parallel downloads for pacman.
 ```
-sudo sed -i 's/^#Parall/Parall/' /etc/pacman.conf
+sed -i 's/^#Parall/Parall/' /etc/pacman.conf
 ```
+
+Dismount install ISO and reboot.
+
+## Configuring KDE Plasma
 Install extra packages including firefox.
 ```
 sudo pacman -S --needed pacman-contrib libva-utils mesa-demos compsize firefox
+```
+If you want a full featured KDE install add kde-applications.
+```
+sudo pacman -S --needed kde-applications-meta
 ```
 ### Make firefox usable. Add extensions.
 Ublock Origin \
@@ -129,10 +157,6 @@ media.av1.enable False \
 network.trr.default_provider_uri https://94.140.14.14/dns-query \
 network.trr.mode 3
 
-If you want a full featured KDE install add kde-applications.
-```
-sudo pacman -S --needed kde-applications-meta
-```
 Change default cursor from Adwaita to breeze. This will fix sddm and other places.
 ```
 sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
@@ -229,6 +253,7 @@ cp -r color-schemes ~/.local/share
 ```
 Set global theme to Breeze Dark or Breeze Light. Then in colors set one of the corresponding catppuccin color schemes.
 ## Use these mount points if repairing an install from iso.
+You will need to change the `/dev/vda2` to the device you have btrfs installed to. Change `/dev/vda1` to your boot device.
 ```
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
