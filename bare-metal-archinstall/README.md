@@ -90,52 +90,86 @@ Install Archlinux with btrfs and compression, systemd-boot, kde desktop and pipe
 ```
 archinstall
 ```
-Dismount install ISO and reboot.
+Accept the chroot into the new system.
 
-## Configuring KDE Plasma
 Enable sudo with NOPASSWD for wheel group.
 ```
-sudo sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/sudoers
+sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/sudoers
 ```
-Remove user specific config.
-Replace USERNAME with your username.
+Remove user specific config. Replace USERNAME with your username.
 ```
-sudo rm /etc/sudoers.d/00_USERNAME
+rm /etc/sudoers.d/00_*
+```
+Set zram to twice the size of ram.
+```
+echo "compression-algorithm = zstd" > /etc/systemd/zram-generator.conf
+echo "zram-size = ram * 2" >> /etc/systemd/zram-generator.conf
 ```
 Allow Parallel downloads for pacman.
 ```
 sudo sed -i 's/^#Parall/Parall/' /etc/pacman.conf
 ```
-Install extra packages including firefox.
+Disable sddm since the graphical login manager wont work with xrdp later.
 ```
-sudo pacman -S --needed pacman-contrib libva-utils mesa-demos compsize firefox
+systemctl disable sddm
 ```
-### Make firefox usable. Add extensions.
-Ublock Origin \
-Sponsor Block \
-I still don't care about cookies
+Enable sshd to use ssh with the new installed system.
+```
+systemclt enable sshd
+```
+## Wireless setup (Option 1) Copy existing connection.
+In order to reboot into the new install but also have it connect with the same IP address so that ssh keeps working we will disable NetworkManager and copy the existing settings over. This will let iwd automatically connect wihtout needing to login. But KDE will not show the network icon since NetworkManager is not running.
 
-### In firefox about:config set
-media.av1.enable False \
-network.trr.default_provider_uri https://94.140.14.14/dns-query \
-network.trr.mode 3
+Disable NetworkManager as we will use iwd.
+```
+systemctl disbale NetworkManager
+```
+Enable iwd.
+```
+systemclt enable iwd
+```
+Enable systemd-networkd.
+```
+systemctl enable systemd-networkd
+```
+Enable systemd-resolved
+```
+systemclt enable systemd-resolved
+```
+Exit chroot.
+```
+exit
+```
+Copy configuration files over for systemd-networkd
+```
+cp /etc/systemd/network/* /mnt/etc/systemd/network
+```
+Create a simlink for systemd-resolved. Remove `/mnt/etc/resolv.conf` if you disable systemd-resolved later.
+```
+ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
+```
+Copy iwd login credentials.
+```
+cp /var/lib/iwd/* /mnt/var/lib/iwd
+```
+Reboot the host system.
+```
+reboot
+```
+## Wireless setup (Option 2)
+In KDE NetworkManager will connect to wifi when logged in. But we want wifi connected on bootup. Using nmcli we will set up a connection that will do this. This will mean NetworkManager is still runnning for KDE. But this will mean we need to Interact with the host system again to set this up. This can't be done remotely.
 
-If you want a full featured KDE install add kde-applications.
+After rebooting the host system login and then connect to wifi with nmcli. Replace SSID with the SSID used above. You will be asked for sudo password then your SSID password.
 ```
-sudo pacman -S --needed kde-applications-meta
+sudo nmcli device wifi connect "SSID" --ask
 ```
-Change default cursor from Adwaita to breeze. This will fix sddm and other places.
+If you get an error about "secrets were asked but not given", try removing the existing NetworkManager saved login.
 ```
-sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
+sudo nmcli con del "SSID"
 ```
-Set a default keyboard for sddm if you don't want to see it set to US by default. \
-Get a list of available x11-keymaps.
+Get you IP address like above. It may have changed.
 ```
-localectl list-x11-keymap-layouts
-```
-Set an x11-keymap for sddm. Replace gb with your choosen x11-keymap.
-```
-sudo bash -c "echo 'setxkbmap gb' >> /usr/share/sddm/scripts/Xsetup"
+ip a
 ```
 ## Setting up xrdp
 Install needed packages to build xrdp xorgxrdp and pipewire-module-xrdp.
@@ -173,12 +207,6 @@ Enable xrdp service.
 ```
 sudo systemctl enable xrdp
 ```
-Disable sddm service.
-```
-sudo systemctl disable sddm
-```
-Reboot the VM.
-
 On Guest system install freerdp.
 ```
 sudo pacman -S --needed freerdp
@@ -190,6 +218,38 @@ xfreerdp3 /list:kbd
 Check virt-manager for the IP address of the archlinux vm. USERNAME and PASSWD will be the ones you created for this VM.
 ```
 xfreerdp3 /u:USERNAME /p:PASSWD /w:1366 /h:768 /v:IP /video /sound /rfx /network:lan /gfx /dynamic-resolution /bpp:32 /kbd:layout:LAYOUT
+```
+## Configure Archlinux
+Install extra packages including firefox.
+```
+sudo pacman -S --needed pacman-contrib libva-utils mesa-demos compsize firefox
+```
+### Make firefox usable. Add extensions.
+Ublock Origin \
+Sponsor Block \
+I still don't care about cookies
+
+### In firefox about:config set
+media.av1.enable False \
+network.trr.default_provider_uri https://94.140.14.14/dns-query \
+network.trr.mode 3
+
+If you want a full featured KDE install add kde-applications.
+```
+sudo pacman -S --needed kde-applications-meta
+```
+Change default cursor from Adwaita to breeze. This will fix sddm and other places.
+```
+sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
+```
+Set a default keyboard for sddm if you don't want to see it set to US by default. \
+Get a list of available x11-keymaps.
+```
+localectl list-x11-keymap-layouts
+```
+Set an x11-keymap for sddm. Replace gb with your choosen x11-keymap.
+```
+sudo bash -c "echo 'setxkbmap gb' >> /usr/share/sddm/scripts/Xsetup"
 ```
 ## Add Catppuccin color schemes for breeze.
 Git color schemes from this repo. There are 3 dark and 1 light.
@@ -204,7 +264,9 @@ mkdir -p ~/.local/share
 cp -r color-schemes ~/.local/share
 ```
 Set global theme to Breeze Dark or Breeze Light. Then in colors set one of the corresponding catppuccin color schemes.
+
 ## Use these mount points if repairing an install from iso.
+You will need to change the `/dev/sda2` to the device you have btrfs installed to. Change `/dev/sda1` to your boot device.
 ```
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
 mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
