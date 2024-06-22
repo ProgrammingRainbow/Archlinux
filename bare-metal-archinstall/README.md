@@ -73,9 +73,7 @@ If there is already an existing fingerprint that needs to be removed.
 ```
 ssh-keygen -R IP
 ```
-
-
-
+## Install Archlinux
 Run reflector to get fastest servers.
 ```
 reflector
