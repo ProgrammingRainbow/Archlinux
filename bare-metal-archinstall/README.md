@@ -107,7 +107,7 @@ echo "zram-size = ram * 2" >> /etc/systemd/zram-generator.conf
 ```
 Allow Parallel downloads for pacman.
 ```
-sudo sed -i 's/^#Parall/Parall/' /etc/pacman.conf
+sed -i 's/^#Parall/Parall/' /etc/pacman.conf
 ```
 Disable sddm since the graphical login manager wont work with xrdp later.
 ```
@@ -224,6 +224,10 @@ Install extra packages including firefox.
 ```
 sudo pacman -S --needed pacman-contrib libva-utils mesa-demos compsize firefox
 ```
+If you want a full featured KDE install add kde-applications.
+```
+sudo pacman -S --needed kde-applications-meta
+```
 ### Make firefox usable. Add extensions.
 Ublock Origin \
 Sponsor Block \
@@ -234,10 +238,6 @@ media.av1.enable False \
 network.trr.default_provider_uri https://94.140.14.14/dns-query \
 network.trr.mode 3
 
-If you want a full featured KDE install add kde-applications.
-```
-sudo pacman -S --needed kde-applications-meta
-```
 Change default cursor from Adwaita to breeze. This will fix sddm and other places.
 ```
 sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
