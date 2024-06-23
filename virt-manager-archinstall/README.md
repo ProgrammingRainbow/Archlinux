@@ -128,7 +128,7 @@ rm /etc/sudoers.d/00_*
 ```
 Set zram to twice the size of ram.
 ```
-echo "compression-algorithm = zstd" > /etc/systemd/zram-generator.conf
+echo "compression-algorithm = zstd" >> /etc/systemd/zram-generator.conf
 echo "zram-size = ram * 2" >> /etc/systemd/zram-generator.conf
 ```
 Allow Parallel downloads for pacman.
@@ -205,10 +205,12 @@ echo "exec startplasma-x11" >> ~/.xinitrc
 Enable xrdp service.
 ```
 sudo systemctl enable xrdp
+sudo systemctl start xrdp
 ```
 Disable sddm service.
 ```
 sudo systemctl disable sddm
+sudo systemctl stop sddm
 ```
 Reboot the VM.
 
