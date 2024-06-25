@@ -80,7 +80,7 @@ reflector
 ```
 Allow Parallel downloads for pacman.
 ```
-sudo sed -i 's/^#Parall/Parall/' /etc/pacman.conf
+sed -i 's/^#Parall/Parall/' /etc/pacman.conf
 ```
 Update available package list.
 ```
