@@ -115,7 +115,7 @@ systemctl disable sddm
 ```
 Enable sshd to use ssh with the new installed system.
 ```
-systemclt enable sshd
+systemctl enable sshd
 ```
 ## Wireless setup (Option 1) Copy existing connection.
 In order to reboot into the new install but also have it connect with the same IP address so that ssh keeps working we will disable NetworkManager and copy the existing settings over. This will let iwd automatically connect wihtout needing to login. But KDE will not show the network icon since NetworkManager is not running.
