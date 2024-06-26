@@ -206,6 +206,7 @@ echo "exec startplasma-x11" >> ~/.xinitrc
 Enable xrdp service.
 ```
 sudo systemctl enable xrdp
+sudo systemctl start xrdp
 ```
 On Guest system install freerdp.
 ```
