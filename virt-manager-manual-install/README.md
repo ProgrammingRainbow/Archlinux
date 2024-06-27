@@ -344,7 +344,7 @@ sudo localectl set-locale LANG=en_GB.UTF-8
 ```
 List keyboard keymaps.
 ```
-sudo localectl list-keymaps
+sudo localectl list-keymaps | more
 ```
 Set keyboard keymap. Replace uk with your own keymap.
 ```
