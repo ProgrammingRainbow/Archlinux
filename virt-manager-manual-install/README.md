@@ -242,7 +242,7 @@ intel-media-driver libva-intel-driver libva-mesa-driver mesa vulkan-intel vulkan
 xf86-video-amdgpu xf86-video-ati xf86-video-nouveau xf86-video-vmware xorg-server xorg-xinit \
 pipewire pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse wireplumber \
 ark dolphin egl-wayland konsole kate network-manager-applet plasma-meta plasma-workspace \
-pacman-contrib libva-utils comsize mesa-demos firefox kde-applications-meta
+pacman-contrib libva-utils compsize mesa-demos firefox kde-applications-meta
 ```
 Generate `/etc/fstab` for your new system.
 ```
@@ -293,6 +293,10 @@ Enable Network Manager to user the internet.
 ```
 systemctl enable NetworkManager
 ```
+Enable sshd
+```
+systemctl enable sshd
+```
 Create a root password
 ```
 passwd
@@ -316,7 +320,7 @@ reboot
 ## Finish configuring in new system.
 List timezones.
 ```
-sudo timedatectl list-timezones
+sudo timedatectl list-timezones | more
 ```
 Set your timezone. Replace Europe/London below with yours.
 ```
