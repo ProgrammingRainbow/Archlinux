@@ -282,6 +282,7 @@ sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/
 ```
 Set zram to twice the size of ram.
 ```
+echo "[zram0]" > /etc/systemd/zram-generator.conf
 echo "compression-algorithm = zstd" >> /etc/systemd/zram-generator.conf
 echo "zram-size = ram * 2" >> /etc/systemd/zram-generator.conf
 ```
@@ -329,6 +330,10 @@ sudo timedatectl set-timezone Europe/London
 Enable network time synchronization.
 ```
 sudo timedatectl set-ntp true
+```
+Set hostname.
+```
+sudo hostnamectl hostname archlinux
 ```
 Uncomment the locale you wish to generate.
 ```
