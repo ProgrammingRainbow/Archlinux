@@ -289,8 +289,10 @@ Allow Parallel downloads for pacman.
 ```
 sed -i 's/^#Parall/Parall/' /etc/pacman.conf
 ```
-
-
+Enable Network Manager to user the internet.
+```
+systemctl enable NetworkManager
+```
 Create a root password
 ```
 passwd
@@ -303,35 +305,30 @@ Give your new user a password.
 ```
 passwd MYUSER
 ```
-
-
-### Boot into new Arch Linux
-We need to exit the chroot environment.
-
-    # exit
-
-Now we need to reboot into the new Arch Linux system. Be sure to remove the USB at shutdown and let it boot into the new system.
-
-    # reboot
-
-
+Exit the chroot environment.
+```
+exit
+```
+Reboot into the new Arch Linux system.
+```
+reboot
+```
+## Finish configuring in new system.
 List timezones.
 ```
-timedatectl list-timezones
+sudo timedatectl list-timezones
 ```
 Set your timezone. Replace Europe/London below with yours.
 ```
-timedatectl set-timezone Europe/London
+sudo timedatectl set-timezone Europe/London
 ```
 Enable network time synchronization.
 ```
-timedatectl set-ntp true
+sudo timedatectl set-ntp true
 ```
-
-
 Uncomment the locale you wish to generate.
 ```
-nano /etc/locale.gen
+sudo nano /etc/locale.gen
 ```
 Generate locale.
 ```
@@ -339,71 +336,45 @@ sudo locale-gen
 ```
 Set your locale with localectl. Replace en_GB.UTF-8 with your locale.
 ```
-localectl set-locale LANG=en_GB.UTF-8
+sudo localectl set-locale LANG=en_GB.UTF-8
 ```
-
 List keyboard keymaps.
 ```
-localectl list-keymaps
+sudo localectl list-keymaps
 ```
 Set keyboard keymap. Replace uk with your own keymap.
 ```
-localectl set-keymap uk
+sudo localectl set-keymap uk
 ```
 List of xll-keymap layouts.
 ```
-localectl list-x11-keymap-layouts
+sudo localectl list-x11-keymap-layouts
 ```
 Set x11-keymap. Replace gb with your own x11-keymap.
 ```
-localectl set-x11-keymap gb
-```
-
-
-Change default cursor from Adwaita to breeze. This will fix sddm and other places.
-```
-sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
-```
-Set a default keyboard for sddm if you don't want to see it set to US by default. \
-Get a list of available x11-keymaps.
-```
-localectl list-x11-keymap-layouts
+sudo localectl set-x11-keymap gb
 ```
 Set an x11-keymap for sddm. Replace gb with your choosen x11-keymap.
 ```
 sudo bash -c "echo 'setxkbmap gb' >> /usr/share/sddm/scripts/Xsetup"
 ```
-
-
-### Enable required services
-Enabling system services will start them during the next boot.
-We need to enable Network Manager to user the internet.
-
-    # systemctl enable NetworkManager
-
-Enable bluetooth servie.
-
-    # systemctl enable bluetooth
-
-Enabling SDDM will make the system boot to the graphical login manager for KDE.
-
-    # systemctl enable sddm
-
-### Reboot
-Now it is time to reboot into your new Arch Linux system.
-
-    # reboot
-
-
-
-
-
-
-
-Dismount install ISO and reboot.
-
-
+Change default cursor from Adwaita to breeze. This will fix sddm and other places.
 ```
+sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
+```
+Enable bluetooth servie.
+```
+systemctl enable bluetooth
+```
+Enabling SDDM will make the system boot to the graphical login manager for KDE.
+```
+systemctl enable sddm
+```
+Reboot into KDE Plasma.
+```
+reboot
+```
+## Configure Firefox
 ### Make firefox usable. Add extensions.
 Ublock Origin \
 Sponsor Block \
