@@ -244,80 +244,38 @@ pipewire pipewire-alsa pipewire-jack pipewire-pulse gst-plugin-pipewire libpulse
 ark dolphin egl-wayland konsole kate network-manager-applet plasma-meta plasma-workspace \
 pacman-contrib libva-utils comsize mesa-demos firefox kde-applications-meta
 ```
-## Generate fstab
 Generate `/etc/fstab` for your new system.
 ```
 genfstab -U /mnt >> /mnt/etc/fstab
 ```
-
-
-
-
-
-
+Copy over systemd-network config files.
 ```
 cp /etc/systemd/network/* /mnt/etc/systemd/network
 ```
-
-```
-ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
-```
-
 ## Configure system in chroot environment
-### Chroot
 Use arch-chroot to change roots into new system.
 ```
 arch-chroot /mnt
 ```
+Enable systemd-boot.
 ```
 bootctl install
 ```
-```
-blkid -s PARTUUID -o value /dev/vda2
-```
-```
-nano /boot/loader/entries/archlinux.conf
-```
-```
-title Arch Linux (linux)
-linux /vmlinuz-linux
-initrd /initramfs-linux.img
-options root=PARTUUID={PARTUUID} zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
-```
-or echo
+Create systemd-boot entry for Archlinux. `blkid -s PARTUUID -o value /dev/vda2` \
+will be used to figure out the PARTUUID. Replace `/dev/vda2` with your root device.
 ```
 echo "title Arch Linux (linux)
 linux /vmlinuz-linux
 initrd /initramfs-linux.img
 options root=PARTUUID="$(blkid -s PARTUUID -o value /dev/vda2) "zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs" > /boot/loader/entries/archlinux.conf
 ```
-```
-nano /boot/loader/entries/archlinux-fallback.conf
-```
-```
-title Arch Linux (linux-fallback)
-linux /vmlinuz-linux
-initrd /initramfs-linux-fallback.img
-options root={PARTUUID} zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs
-```
-or echo
+Create a systemd-boot entry for Archlinux Fallback.
 ```
 echo "title Arch Linux (linux-fallback)
 linux /vmlinuz-linux
 initrd /initramfs-linux-fallback.img
 options root=PARTUUID="$(blkid -s PARTUUID -o value /dev/vda2) "zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs" > /boot/loader/entries/archlinux-fallback.conf
 ```
-
-
-
-
-
-
-
-
-
-
-
 Enable sudo with NOPASSWD for wheel group.
 ```
 sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/sudoers
@@ -332,26 +290,75 @@ Allow Parallel downloads for pacman.
 sed -i 's/^#Parall/Parall/' /etc/pacman.conf
 ```
 
-Dismount install ISO and reboot.
 
-## Configuring KDE Plasma
-Install extra packages including firefox.
+Create a root password
 ```
-sudo pacman -S --needed pacman-contrib libva-utils mesa-demos compsize firefox
+passwd
 ```
-If you want a full featured KDE install add kde-applications.
+Create a new user. All users in the wheel group will get sudo privilege. Replace MYUSER below with your desired new user name.
 ```
-sudo pacman -S --needed kde-applications-meta
+useradd -m MYUSER -G wheel
 ```
-### Make firefox usable. Add extensions.
-Ublock Origin \
-Sponsor Block \
-I still don't care about cookies
+Give your new user a password.
+```
+passwd MYUSER
+```
 
-### In firefox about:config set
-media.av1.enable False \
-network.trr.default_provider_uri https://94.140.14.14/dns-query \
-network.trr.mode 3
+
+### Boot into new Arch Linux
+We need to exit the chroot environment.
+
+    # exit
+
+Now we need to reboot into the new Arch Linux system. Be sure to remove the USB at shutdown and let it boot into the new system.
+
+    # reboot
+
+
+List timezones.
+```
+timedatectl list-timezones
+```
+Set your timezone. Replace Europe/London below with yours.
+```
+timedatectl set-timezone Europe/London
+```
+Enable network time synchronization.
+```
+timedatectl set-ntp true
+```
+
+
+Uncomment the locale you wish to generate.
+```
+nano /etc/locale.gen
+```
+Generate locale.
+```
+sudo locale-gen
+```
+Set your locale with localectl. Replace en_GB.UTF-8 with your locale.
+```
+localectl set-locale LANG=en_GB.UTF-8
+```
+
+List keyboard keymaps.
+```
+localectl list-keymaps
+```
+Set keyboard keymap. Replace uk with your own keymap.
+```
+localectl set-keymap uk
+```
+List of xll-keymap layouts.
+```
+localectl list-x11-keymap-layouts
+```
+Set x11-keymap. Replace gb with your own x11-keymap.
+```
+localectl set-x11-keymap gb
+```
+
 
 Change default cursor from Adwaita to breeze. This will fix sddm and other places.
 ```
@@ -366,6 +373,47 @@ Set an x11-keymap for sddm. Replace gb with your choosen x11-keymap.
 ```
 sudo bash -c "echo 'setxkbmap gb' >> /usr/share/sddm/scripts/Xsetup"
 ```
+
+
+### Enable required services
+Enabling system services will start them during the next boot.
+We need to enable Network Manager to user the internet.
+
+    # systemctl enable NetworkManager
+
+Enable bluetooth servie.
+
+    # systemctl enable bluetooth
+
+Enabling SDDM will make the system boot to the graphical login manager for KDE.
+
+    # systemctl enable sddm
+
+### Reboot
+Now it is time to reboot into your new Arch Linux system.
+
+    # reboot
+
+
+
+
+
+
+
+Dismount install ISO and reboot.
+
+
+```
+### Make firefox usable. Add extensions.
+Ublock Origin \
+Sponsor Block \
+I still don't care about cookies
+
+### In firefox about:config set
+media.av1.enable False \
+network.trr.default_provider_uri https://94.140.14.14/dns-query \
+network.trr.mode 3
+
 ## Setting up xrdp
 Install needed packages to build xrdp xorgxrdp and pipewire-module-xrdp.
 ```
