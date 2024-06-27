@@ -368,15 +368,15 @@ sudo sed -i 's/Adwaita/breeze_cursors/' /usr/share/icons/default/index.theme
 ```
 Enable bluetooth servie.
 ```
-systemctl enable bluetooth
+sudo systemctl enable bluetooth
 ```
 Enabling SDDM will make the system boot to the graphical login manager for KDE.
 ```
-systemctl enable sddm
+sudo systemctl enable sddm
 ```
 Reboot into KDE Plasma.
 ```
-reboot
+sudo reboot
 ```
 ## Configure Firefox
 ### Make firefox usable. Add extensions.
