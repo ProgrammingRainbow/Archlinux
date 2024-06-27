@@ -179,7 +179,7 @@ I recommend using BTRFS not EXT4, however, there is instructions for both.
 
 Format your system partition. Replace /dev/sdX3 with your system partition.
 ```
-mkfs.btrfs /dev/sdX3
+mkfs.btrfs -f /dev/sdX3
 ```
 Mount root partition first to /mnt. Replace /dev/sdX3 with your root partition.
 ```
