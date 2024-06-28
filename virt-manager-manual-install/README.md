@@ -276,6 +276,10 @@ linux /vmlinuz-linux
 initrd /initramfs-linux-fallback.img
 options root=PARTUUID="$(blkid -s PARTUUID -o value /dev/vda2) "zswap.enabled=0 rootflags=subvol=@ rw rootfstype=btrfs" > /boot/loader/entries/archlinux-fallback.conf
 ```
+Enable systemd-boot loader timeout.
+```
+sed -i 's/^#time/time/' /boot/loader/loader.conf
+```
 Enable sudo with NOPASSWD for wheel group.
 ```
 sed -i 's/^# %wheel ALL=(ALL:ALL) NOPASSWD/%wheel ALL=(ALL:ALL) NOPASSWD/' /etc/sudoers
