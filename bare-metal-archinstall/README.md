@@ -26,7 +26,7 @@ You will need to boot your system from the USB drive. It may be something like p
 If you are using a US keyboard you can skip this step. \
 List available keymaps.
 ```
-localectl list-keymaps
+localectl list-keymaps | more
 ```
 Here is an example of setting the UK keymap.
 ```
@@ -102,6 +102,7 @@ rm /etc/sudoers.d/00_*
 ```
 Set zram to twice the size of ram.
 ```
+echo "[zram0]" > /etc/systemd/zram-generator.conf
 echo "compression-algorithm = zstd" >> /etc/systemd/zram-generator.conf
 echo "zram-size = ram * 2" >> /etc/systemd/zram-generator.conf
 ```
