@@ -128,6 +128,7 @@ rm /etc/sudoers.d/00_*
 ```
 Set zram to twice the size of ram.
 ```
+echo "[zram0]" > /etc/systemd/zram-generator.conf
 echo "compression-algorithm = zstd" >> /etc/systemd/zram-generator.conf
 echo "zram-size = ram * 2" >> /etc/systemd/zram-generator.conf
 ```
