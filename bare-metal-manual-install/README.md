@@ -26,7 +26,7 @@ You will need to boot your system from the USB drive. It may be something like p
 If you are using a US keyboard you can skip this step. \
 List available keymaps.
 ```
-localectl list-keymaps
+localectl list-keymaps | more
 ```
 Here is an example of setting the UK keymap.
 ```
