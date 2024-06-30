@@ -289,7 +289,7 @@ In order to reboot into the new install but also have it connect with the same I
 
 Enable iwd.
 ```
-systemclt enable iwd
+systemctl enable iwd
 ```
 Enable systemd-networkd.
 ```
@@ -297,7 +297,7 @@ systemctl enable systemd-networkd
 ```
 Enable systemd-resolved
 ```
-systemclt enable systemd-resolved
+systemctl enable systemd-resolved
 ```
 Create a simlink for systemd-resolved. Remove `/etc/resolv.conf` if you disable systemd-resolved later.
 ```
