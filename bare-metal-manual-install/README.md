@@ -299,17 +299,17 @@ Enable systemd-resolved
 ```
 systemctl enable systemd-resolved
 ```
-Create a simlink for systemd-resolved. Remove `/etc/resolv.conf` if you disable systemd-resolved later.
-```
-ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-```
 Exit chroot.
 ```
 exit
 ```
+Create a simlink for systemd-resolved. Remove `/etc/resolv.conf` if you disable systemd-resolved later.
+```
+ln -sf ../run/systemd/resolve/stub-resolv.conf /mnt/etc/resolv.conf
+```
 Copy iwd login credentials.
 ```
-cp /var/lib/iwd/* /mnt/var/lib/iwd
+cp -r /var/lib/iwd /mnt/var/lib
 ```
 ## Wireless setup (Option 2)
 In KDE NetworkManager will connect to wifi when logged in. But we want wifi connected on bootup. Using nmcli we will set up a connection that will do this. This will mean NetworkManager is still runnning for KDE. But this will mean we need to Interact with the host system again to set this up. This can't be done remotely.
