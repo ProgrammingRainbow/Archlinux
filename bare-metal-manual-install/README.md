@@ -284,7 +284,12 @@ Enable sshd
 ```
 systemctl enable sshd
 ```
-## Wireless setup (Option 1) Copy existing connection.
+## Wireless setup (Standard)
+Enable NetworkManager.
+```
+systemctl enable NetworkManager
+```
+## Wireless setup (Remote Option 1) Copy existing connection.
 In order to reboot into the new install but also have it connect with the same IP address so that ssh keeps working we will disable NetworkManager and copy the existing settings over. This will let iwd automatically connect wihtout needing to login. But KDE will not show the network icon since NetworkManager is not running.
 
 Enable iwd.
@@ -311,7 +316,7 @@ Copy iwd login credentials.
 ```
 cp -r /var/lib/iwd /mnt/var/lib
 ```
-## Wireless setup (Option 2)
+## Wireless setup (Remote Option 2)
 In KDE NetworkManager will connect to wifi when logged in. But we want wifi connected on bootup. Using nmcli we will set up a connection that will do this. This will mean NetworkManager is still runnning for KDE. But this will mean we need to Interact with the host system again to set this up. This can't be done remotely.
 
 Enable NetworkManager.
