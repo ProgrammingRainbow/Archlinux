@@ -267,6 +267,31 @@ cp -r color-schemes ~/.local/share
 ```
 Set global theme to Breeze Dark or Breeze Light. Then in colors set one of the corresponding catppuccin color schemes.
 
+## Switch from iwd to NetworkManager.
+Enable NetworkManager.
+```
+sudo systemctl enable NetworkManager
+```
+Disable iwd.
+```
+sudo systemctl disable iwd
+```
+Disable systemd-networkd.
+```
+sudo systemctl disable systemd-networkd
+```
+Disable systemd-resolved.
+```
+sudo systemctl disable systemd-resolved
+```
+Remove `/etc/resolv.conf`
+```
+sudo rm /etc/resolv.conf
+```
+Reboot into NetworkManager enabled system.
+```
+sudo reboot
+```
 ## Use these mount points if repairing an install from iso.
 You will need to change the `/dev/sda2` to the device you have btrfs installed to. Change `/dev/sda1` to your boot device.
 ```
