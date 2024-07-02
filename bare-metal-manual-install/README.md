@@ -1,4 +1,4 @@
-[Installing Archlinux on Bare-metal manually - Youtube Video](https://www.youtube.com/watch?v=i2FySTchb1U&list=PLO02jwa2ZaiDJhBbGIXkqk1tJ4CKRD0FJ)
+[Installing Archlinux on Bare-metal manually - Youtube Video](https://www.youtube.com/watch?v=lvC7-qeNS2s&list=PLO02jwa2ZaiDJhBbGIXkqk1tJ4CKRD0FJ)
 
 ![Screenshot](screenshot.png)
 # Installing Archlinux on bare-metal manually.
