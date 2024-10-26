@@ -201,7 +201,7 @@ umount /mnt
 ```
 Mount root subvolume on /mnt. Replace /dev/sdX3 with your root partion.
 ```
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/sdX3 /mnt
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@ /dev/sdX3 /mnt
 ```
 Create needed directories in root for subvolume.
 ```
@@ -209,10 +209,10 @@ mkdir -p /mnt/{home,var/log,var/cache/pacman/pkg,.snapshots}
 ```
 Mount the subvolumes. Replace /dev/sdX3 with the root partiton.
 ```
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/sdX3 /mnt/home
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/sdX3 /mnt/var/log
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/sdX3 /mnt/var/cache/pacman/pkg
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/sdX3 /mnt/.snapshots
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@home /dev/sdX3 /mnt/home
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@log /dev/sdX3 /mnt/var/log
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@pkg /dev/sdX3 /mnt/var/cache/pacman/pkg
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@.snapshots /dev/sdX3 /mnt/.snapshots
 ```
 
 ## Mount boot partition, creating the directory if needed
@@ -487,10 +487,10 @@ Set global theme to Breeze Dark or Breeze Light. Then in colors set one of the c
 ## Use these mount points if repairing an install from iso.
 You will need to change the `/dev/vda2` to the device you have btrfs installed to. Change `/dev/vda1` to your boot device.
 ```
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
-mount -o ssd,discard=async,noatime,compress=zstd:3,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@ /dev/vda2 /mnt
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@home /dev/vda2 /mnt/home
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@log /dev/vda2 /mnt/var/log
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@pkg /dev/vda2 /mnt/var/cache/pacman/pkg
+mount -o rw,relatime,compress=zstd:3,ssd,discard=async,space_cache=v2,autodefrag,subvol=@.snapshots /dev/vda2 /mnt/.snapshots
 mount -t vfat -o rw,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=ascii,shortname=mixed,utf8,errors=remount-ro /dev/vda1 /mnt/boot
 ```
